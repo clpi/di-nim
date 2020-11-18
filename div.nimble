@@ -5,7 +5,7 @@ author        = "Chris P"
 description   = "A new awesome nimble package"
 license       = "MIT"
 srcDir        = "src"
-bin           = @["one"]
+bin           = @["div"]
 
 
 
