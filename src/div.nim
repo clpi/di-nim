@@ -16,12 +16,6 @@ var
   citem, crecord, cfield: string = ""
   tag: string = ""
 
-type
-  FieldKind = enum
-    int, str, date
-  Status = enum
-    active, inactive
-
 var itemList, recordList, fieldList: array[0, string]
 
 proc initData =
@@ -42,6 +36,13 @@ proc readRecords =
 proc readFields =
   setForegroundColor(fgGreen)
   echo "Reading fields..."
+
+proc newGeneral =
+  var kind = readline(stdin)
+  var name = readline(stdin)
+
+proc newItem =
+  var name = readline(stdin)
 
 proc createItem =
   setForegroundColor(fgMagenta)
@@ -79,9 +80,22 @@ proc processItem() =
   echo "Item received: ", name
 
 proc processRecord() =
-  var name: string = paramStr(2)
   setForegroundColor(fgBlue)
-  echo "Record received: ", name
+  if paramStr(2) == "":
+    listItem()
+  elif paramStr(2) == "new":
+    newItem()
+  elif paramStr(2) == "link":
+    echo "link record" # TODO
+  else:
+    if paramStr(3) != "":
+      var value: string = paramStr(3)
+    else:
+      var name: string = paramStr(2)
+      echo "Record received: ", name
+
+
+
 
 proc processField() =
   var name: string = paramStr(2)
@@ -113,6 +127,13 @@ proc process()  =
   for kind, key, val in getopt():
     case kind:
     of cmdArgument:
+      case key
+      of "item":
+        echo "item cmd"
+      of "record":
+        echo "record cmd"
+      of "field":
+        echo "field cmd"
       case paramCount():
       of 0:
         setForegroundColor(fgRed)
@@ -122,6 +143,7 @@ proc process()  =
         of "item": listItem()
         of "record": listRecord()
         of "field": listField()
+        of "tag": echo "list tag"
       of 2:
         case paramStr(1):
         of "item":
